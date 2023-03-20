@@ -1,0 +1,87 @@
+//Напишите код приложения, интерфейс которого представляет собой input и кнопку. В input можно ввести любое число. При клике на кнопку происходит следующее:
+//Если число не попадает в диапазон от 1 до 10 — выводить ниже текст «число вне диапазона от 1 до 10».
+//Если число попадает в диапазон от 1 до 10 — сделать запрос c помощью XHR по URL https://picsum.photos/v2/list?limit=10, где get-параметр limit — это введённое число.
+
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .btn {
+            padding: 0;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            box-shadow: none;
+            cursor: pointer;
+            margin: 5px 10px;
+            padding: 10px 50px;
+            border-radius: 30px;
+            font-size: 12px;
+            line-height: 15px;
+            text-transform: uppercase;
+            color: white;
+            background: #f12652;
+            transition: 0.3s;
+        }
+        
+        .btn:hover {
+            box-shadow: 0px 2px 8px 2px rgba(214, 164, 181, 0.3);
+            transform: scale(1.05);
+        }
+    </style>
+    <title> Задание 3, модуль 9. Практика. </title>
+</head>
+
+<body>
+
+    <fieldset>
+        <legend> Посмотрим картинку? </legend>
+        <p> <label> Введите число от 1 до 10. </label> <br />
+            <input id="input" class="text" size="5"> </p>
+        <p> <button class="btn j-btn-request"> Кликай </button> </p>
+    </fieldset>
+    <img id="result" />
+</body>
+
+<script>
+    const resultNode = document.querySelector('.j-result');
+    const btn = document.querySelector('.j-btn-request');
+
+    btn.addEventListener('click', () => {
+        const value = document.querySelector('input').value;
+        let result = document.getElementById('result');
+        result.textContent = '';
+        if (!(value >= 1 && value <= 10)) {
+            result.textContent = 'число вне диапазона от 1 до 10';
+            return;
+        }    
+        else {
+            fetch(`https://picsum.photos/v2/list?limit=${value}`)
+            .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log(apiData);
+        )}
+            function displayResult(apiData) {
+  let cards = "";
+  apiData.forEach((item) => {
+    const cardBlock = `
+      <div class="card">
+        <img
+          src="${item.download_url}"
+          class="card-image"
+        />
+        <p>${item.author}</p>
+      </div>
+    `;
+    cards = cards + cardBlock;
+  });
+  resultNode.innerHTML = cards;
+}
+</script>
+</html>
